@@ -43,10 +43,6 @@ app.use(multer(
 app.listen(8881);
 console.log('server is start: '+ 8881);
 
-app.get('/', function(req, res){
-    res.send('hello');
-});
-
 app.post('/upload', function(req, res){
     console.log(req.files);
     res.send(req.files);
@@ -55,6 +51,7 @@ app.post('/upload', function(req, res){
 app.get('/imgList', function(req, res){
     var classes, path;
 
+    console.log(req.query.c);
     classes = req.query.c || 'girl';
     path = './uploads/'+classes+'/';
 
@@ -63,6 +60,7 @@ app.get('/imgList', function(req, res){
         if(err){
             res.send(err);
         }
+
         files = files.map(function(element, index){
             return path+element;
         });

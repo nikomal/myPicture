@@ -51,8 +51,8 @@
 
             realWidth = _this.find('>li').width();
 
+            //计算真实大小和地址
             var change = function(_src, _width, _height, realWidth){
-                console.log(arguments);
                 var percent, width, height, src;
                 _width = parseInt(_width);
                 _height = parseInt(_height);
@@ -69,6 +69,7 @@
                 }
             };
 
+            //开始加载图片
             _this.find('img').each(function(index, element){
                 var image = $(element);
                 imgUrl = image.attr('data-src');
@@ -93,8 +94,6 @@
             var _this = $(this);
             var _left, _top, _width, height;
 
-            _left = 0;
-            _top = 0;
             _width = _this.find('>li').outerWidth();
 
             var  heights = [0, 0, 0, 0, 0];
@@ -103,7 +102,6 @@
                 var li = $(element);
                 var num = index%5;
                 if(num !== 0){
-                    console.log(heights);
                     if(heights[num] > heights[num-1]){
                         num--;
                     }
@@ -122,23 +120,35 @@
     (function($){
 
         var _this      = $('.main'),
-            imageLayer = _this.find('.image-layer');
+            imageLayer = _this.find('.image-layer'),
+            url        = '/imgList?';
 
-        var domain = location.origin;
+        function parseUrl(url){
 
-        $.ajax('/imgList?c=girl').success(function(response){
+            var dic={};
 
-            var width, height, url;
+            if(!url){
+                return false;
+            }
+            url.replace('?','').split('&').forEach(function(element, index){
+                dic[element.split('=')[0]] = element.split('=')[1];
+            });
+            return dic;
+        }
+
+        // 判断是否有参数
+        var params = parseUrl(location.search);
+        if(params.c){
+            url = url+'c='+params.c;
+        }
+
+        $.ajax(url).success(function(response){
 
             response.forEach(function(element,index){
-                width = element.width;
-                height = element.height;
-                var url = element.url;
-                imageLayer.append('<li><img data-src="'+url+'" alt=" " data-width="'+width+'" data-height="'+height+'"/></li>');
+                imageLayer.append('<li><img data-src="'+element.url+'" alt=" " data-width="'+element.width+'" data-height="'+element.height+'"/></li>');
             });
-            setTimeout(function(){
-                $('.image-layer').lazyLoad().Masonry();
-            },300);
+            $('.image-layer').lazyLoad().Masonry();
+
         });
 
     })(jQuery);
