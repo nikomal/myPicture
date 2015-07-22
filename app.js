@@ -51,7 +51,7 @@ app.get('/imgList', function(req, res){
     var classes, path;
 
     console.log(req.query.c);
-    classes = req.query.c || 'girl';
+    classes = req.query.c || 'lol';
     path = './uploads/'+classes+'/';
 
     fs.readdir(path, function(err, files){
