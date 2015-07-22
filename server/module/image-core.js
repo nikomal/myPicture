@@ -50,11 +50,22 @@ var imageInfoAll = function(filesPath, callback){
 
     var filesPathList = [];
 
-    console.log(filesPath);
     filesPath.forEach(function(path, index){
-        filesPathList[index] = images(path).size();
-        filesPathList[index].url = path.replace('./uploads', '');
+        var image;
+        try{
+            image = images(path);
+        }catch(e){
+            console.log(e);
+        }
+
+        if(image){
+            var obj = image.size();
+            obj.url = path.replace('./uploads', '');
+            filesPathList.push(obj);
+        }
+
     });
+    console.log(filesPathList);
     callback(filesPathList);
 };
 
