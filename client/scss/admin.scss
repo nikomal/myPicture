@@ -1,0 +1,357 @@
+$main-color: #e05b5b;
+$border-color: #e5e5e5;
+
+html,body{
+  width: 100%;
+  height: 100%;
+}
+body{
+  font-family: 'Microsoft Yahei',serif;
+  font-size: 14px;
+  color: #555;
+}
+img{
+  max-width: 100%;
+}
+
+.c-menu, .c-content{
+  float: left;
+}
+
+.c-menu{
+  position: fixed;
+  height: 100%;
+
+  text-align: center;
+
+  background-color: #292E32;
+  z-index: 1;
+
+
+  .c-close-btn,.c-menu-btn{
+    display: none;
+  }
+  .c-dt{
+    height: 61px;
+    line-height: 61px;
+    color: #ffffff;
+    font-size: 20px;
+
+    @media (max-width: 960px){
+      display: none;
+    }
+  }
+  .c-add-pic{
+    height: 123px;
+    button{
+      width: 136px;
+      height: 34px;
+
+      margin-top: 45px;
+      color: #fff;
+      background-color: $main-color;
+      border: none;
+    }
+
+    @media (max-width: 960px){
+      display: none;
+    }
+  }
+
+
+
+  .c-classes{
+
+    color: #aaabab;
+    background-color: #2f3235;
+    &>li{
+      line-height: 55px;
+      box-sizing: border-box;
+      cursor: pointer;
+      &:hover{
+        color: #fff;
+      }
+      &.active{
+        border-left: 3px solid $main-color;
+        background-color: #292a2d;
+        color: #fff;
+      }
+      @media (max-width: 960px){
+        display: none;
+        position: absolute;
+        top: 0;
+
+        width: 100%;
+
+        line-height: 45px;
+
+        &.active{
+          display: block;
+          border-left: none;
+        }
+      }
+    }
+
+
+  }
+
+  @media (max-width: 960px) {
+    width: 100%;
+    height: 45px;
+
+    .c-menu-btn{
+      display: block;
+
+      position: absolute;
+      top: 50%;
+      left: 10px;
+
+      transform: translateY(-50%);
+
+      font-size: 20px;
+
+      color: #fff;
+      z-index: 1;
+      cursor: pointer;
+    }
+
+    &.open{
+      height: auto;
+
+      z-index: 3;
+
+      .c-menu-btn{
+        display: none;
+      }
+      .c-close-btn{
+        display: block;
+        position: absolute;
+        top: 10px;
+        right: 10px;
+
+        font-size: 20px;
+
+        color: #fff;
+        cursor: pointer;
+      }
+
+      .c-classes{
+
+        &>li{
+          position: inherit;
+          display: block;
+        }
+      }
+    }
+
+  }
+
+  @media (min-width: 960px) {
+    width: 15%;
+  }
+
+  @media (min-width: 1401px) {
+    width: 15%;
+  }
+
+
+}
+
+.c-content{
+
+  background-color: #f7f7f7;
+  box-sizing: border-box;
+
+  .c-pic-list{
+
+    &>li{
+      float: left;
+      width: 25%;
+
+      padding: 10px;
+
+      cursor: pointer;
+      box-sizing: border-box;
+
+      @media (min-width: 360px){
+        width: 50%;
+      }
+      @media (min-width: 960px){
+        width: 33%;
+      }
+      @media (min-width: 1441px){
+        width: 25%;
+      }
+
+      .c-image-box{
+        width: 100%;
+
+        background-color: #fff;
+        box-shadow: 0 3px 5px 0 rgba(0, 0, 0, 0.08);
+
+      }
+      .c-image{
+        position: relative;
+        padding: 10px;
+        .c-layer{
+          overflow: hidden;
+        }
+        img{
+          display: block;
+          transition: all .3s;
+        }
+        .c-mask{
+          display: none;
+        }
+
+        &:hover{
+          .c-mask{
+            display: block;
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+
+            padding: 10px;
+
+            box-sizing: border-box;
+
+            .c-mask-layer{
+              position: relative;
+              width: 100%;
+              height: 100%;
+              background-color: rgba(224, 91, 91, .34);
+
+              .c-eye{
+                position: absolute;
+                top: 50%;
+                left: 50%;
+
+
+                transform: translate(-50%, -50%);
+                color: #fff;
+                font-size: 80px;
+                text-align: center;
+
+                -webkit-font-smoothing: antialiased;
+              }
+            }
+          }
+          img{
+            transform: scale(1.1);
+            transition: all .3s;
+          }
+        }
+      }
+      //图片标题
+      .c-title{
+        position: relative;
+        padding-left: 10px;
+        line-height: 30px;
+      }
+      
+      //更多
+      .c-more{
+        $border-color: #ccc;
+
+        position: absolute;
+        top: 50%;
+        right: 5px;
+        transform: translateY(-50%);
+
+        &.active{
+          .c-polygon{
+            display: block;
+          }
+          .c-more-sub{
+            display: block;
+          }
+        }
+
+        //三角形
+        .c-polygon{
+          display: none;
+
+          position: absolute;
+          bottom: 100%;
+
+          width: 0;
+          height: 0;
+
+          transform: translateY(16px);
+
+          border: 8px solid transparent;
+          border-top-color: #ccc;
+          z-index: 2;
+        }
+
+        //三角形边框
+        .c-polygon-border{
+          border-top-color: #fff;
+          margin-bottom: 1px;
+          z-index: 3;
+        }
+
+        .c-close{
+          position: absolute;
+          top: 0;
+          right: 0;
+          border: none !important;
+
+          background-color: #fff;
+          border-radius: 50%;
+          transform: translate(50%,-50%);
+          line-height: 14px;
+        }
+
+
+        .c-more-sub{
+          display: none;
+
+          position: absolute;
+          bottom: 100%;
+          right: -8px;
+
+          width: 100px;
+
+          text-align: center;
+
+          background-color: #fff;
+          border-top: 1px solid $border-color;
+          border-bottom: 1px solid $border-color;
+
+          &>li{
+
+            border-left: 1px solid $border-color;
+            border-right: 1px solid $border-color;
+
+            &:hover{
+              border-left: 3px solid $main-color;
+              background-color: #F2F2F3;
+            }
+          }
+
+        }
+      }
+
+    }
+  }
+
+  @media (max-width: 960px) {
+    width: 100%;
+    padding-top: 60px;
+  }
+  @media (min-width: 960px) {
+    width: 85%;
+    margin-left: 15%;
+    padding: 33px 15px 20px 17px;
+  }
+  @media (min-width: 1441px) {
+    width: 85%;
+    margin-left: 15%;
+    padding: 33px 15px 20px 17px;
+  }
+
+
+}

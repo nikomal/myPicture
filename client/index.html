@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>美女图片</title>
+    <link rel="stylesheet" href="css/ccKit.css"/>
+    <link rel="stylesheet/less" href="css/index.less"/>
+    <style>
+
+    </style>
+</head>
+<body>
+
+<div class="header cc-x24">
+    <div class="logo">
+        Picture
+    </div>
+    <ul class="menu">
+        <li><a href="">全部图片</a></li>
+        <li><a href="">美女</a></li>
+        <li><a href="">风景</a></li>
+        <li><a href="">明星</a></li>
+        <li><a href="">壁纸</a></li>
+        <li><a href="">清新</a></li>
+        <li><a href="">动漫</a></li>
+    </ul>
+</div>
+
+<div class="main cc-x24 cc-clearfix">
+
+    <div class="container">
+        &nbsp;
+        <ul class="image-layer">
+
+        </ul>
+
+    </div>
+
+</div>
+
+<script src="plugins/less.min.js"></script>
+<script src="js/jquery.min.js"></script>
+<script>
+
+    'use strict';
+    (function($){
+
+        $.fn.lazyLoad = function(){
+            var _this = $(this);
+            var imgUrl, imgWidth, imgHeight, realWidth;
+
+            realWidth = _this.find('>li').width();
+
+            var change = function(_src, _width, _height, realWidth){
+                console.log(arguments);
+                var percent, width, height, src;
+                _width = parseInt(_width);
+                _height = parseInt(_height);
+
+                percent = realWidth/_width;
+                console.log(percent);
+                width = realWidth;
+                height = parseInt(_height*percent);
+                src = 'getImage/?path='+_src+'&width='+width+'&height='+height;
+                return {
+                    src: src,
+                    width: width,
+                    height: height
+                }
+            };
+
+            _this.find('img').each(function(index, element){
+                var image = $(element);
+                imgUrl = image.attr('data-src');
+                imgWidth = image.attr('data-width');
+                imgHeight = image.attr('data-height');
+
+                var attr = change(imgUrl, imgWidth, imgHeight, realWidth);
+                image.attr(
+                        {
+                            'src': attr.src,
+                            'width': attr.width,
+                            'height': attr.height
+                        }
+                );
+
+            });
+
+            return this;
+        };
+
+        $.fn.Masonry = function () {
+            var _this = $(this);
+            var _left, _top, _width, height;
+
+            _left = 0;
+            _top = 0;
+            _width = _this.find('>li').outerWidth();
+
+            var  heights = [0, 0, 0, 0, 0];
+
+            _this.find('>li').each(function (index, element) {
+                var li = $(element);
+                var num = index%5;
+                if(num !== 0){
+                    console.log(heights);
+                    if(heights[num] > heights[num-1]){
+                        num--;
+                    }
+                }else if(num === 0){
+                    if(heights[num] > heights[4]){
+                        num = 4;
+                    }
+                }
+                li.css({'left': _width*num, 'top': heights[num]});
+                heights[num] += li.outerHeight();
+            });
+        }
+
+    })(jQuery);
+
+    (function($){
+
+        var _this      = $('.main'),
+            imageLayer = _this.find('.image-layer');
+
+        var domain = location.origin;
+
+        $.ajax('/imgList?c=girl').success(function(response){
+
+            var width, height, url;
+
+            response.forEach(function(element,index){
+                width = element.width;
+                height = element.height;
+                var url = element.url;
+                imageLayer.append('<li><img data-src="'+url+'" alt=" " data-width="'+width+'" data-height="'+height+'"/></li>');
+            });
+            setTimeout(function(){
+                $('.image-layer').lazyLoad().Masonry();
+            },300);
+        });
+
+    })(jQuery);
+
+</script>
+</body>
+</html>
