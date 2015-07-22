@@ -10,8 +10,7 @@ var express    = require('express'),
     fs         = require('fs'),
     //sharp      = require('sharp'),
     images     = require('images'),
-    imageCore  = require('./server/module/image-core.js'),
-    gm         = require('gm').subClass({ imageMagick: true });
+    imageCore  = require('./server/module/image-core.js');
 
 var app = express();
 
