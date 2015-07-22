@@ -1,33 +1,32 @@
-# Ïà²á¹ÜÀíÆ÷
+# ç›¸å†Œç®¡ç†å™¨
 
-ÕâÊÇÒ»¸öÏà²á¹ÜÀíÆ÷£¬ÒÔnodejsÎªºóÌ¨ÓïÑÔÐ´µÄ
+è¿™æ˜¯ä¸€ä¸ªç›¸å†Œç®¡ç†å™¨ï¼Œä»¥nodejsä¸ºåŽå°è¯­è¨€å†™çš„
 
-- **Ö§³ÖÆÙ²¼Á÷**
-- **Ö§³ÖÏìÓ¦Ê½£¨²¿·Ö£¬ÓÐ´ýÍêÉÆ£©**
-- **Í¼Æ¬ÅúÁ¿ÉÏ´«**
-- ***HTML5ä¯ÀÀÆ÷Ö§³Ö**
+- **æ”¯æŒç€‘å¸ƒæµ**
+- **æ”¯æŒå“åº”å¼ï¼ˆéƒ¨åˆ†ï¼Œæœ‰å¾…å®Œå–„ï¼‰**
+- **å›¾ç‰‡æ‰¹é‡ä¸Šä¼ **
+- ***HTML5æµè§ˆå™¨æ”¯æŒ**
 
 -------------------
 
 
-## Nodejs ¿ª·ÅµÄapi½Ó¿Ú
+## Nodejs å¼€æ”¾çš„apiæŽ¥å£
 
-> /?c=girl ¡£ ·µ»ØÕâ¸ö·ÖÀàÏÂÃæµÄËùÓÐÍ¼Æ¬¶ÔÏóÁÐ±í£¬¶ÔÏó°üº¬Ô­Í¼Æ¬µÄ´óÐ¡ºÍURL
+> /?c=girl ã€‚ è¿”å›žè¿™ä¸ªåˆ†ç±»ä¸‹é¢çš„æ‰€æœ‰å›¾ç‰‡å¯¹è±¡åˆ—è¡¨ï¼Œå¯¹è±¡åŒ…å«åŽŸå›¾ç‰‡çš„å¤§å°å’ŒURL
 
-> /getImage/?path=/girl/20150227194035_rVtUF.jpeg&width=230&height=306.  ¸ù¾Ý´«ÈëµÄwidthºÍheight·µ»ØÍ¼Æ¬µÄ´óÐ¡£¨¿ÉÑ¡£©¡£pathÍ¼Æ¬µÄÂ·¾¶£¨±ØÐë£©
+> /getImage/?path=/girl/20150227194035_rVtUF.jpeg&width=230&height=306.  æ ¹æ®ä¼ å…¥çš„widthå’Œheightè¿”å›žå›¾ç‰‡çš„å¤§å°ï¼ˆå¯é€‰ï¼‰ã€‚pathå›¾ç‰‡çš„è·¯å¾„ï¼ˆå¿…é¡»ï¼‰
 > 
 
-±¾±à¼­Æ÷Ö§³Ö **Markdown Extra** , ¡¡À©Õ¹ÁËºÜ¶àºÃÓÃµÄ¹¦ÄÜ¡£¾ßÌåÇë²Î¿¼[Github][2].  
 
 
-##ÓÃ·¨
+##ç”¨æ³•
 
- 1. cloneÕû¸öÏîÄ¿£¬Í¼Æ¬·ÖÀàÔÚuploadsÏÂÃæÒÔÎÄ¼þ¼ÐÐÎÊ½½øÐÐµÄ¡£
- 3. ±ØÐë°²×°nodejs£¬È»ºóÃüÁîÐÐ½øÈëÏîÄ¿Ä¿Â¼£¬ÊäÈënpm install °²×°ÍêÕûÒÀÀµ¡£
- 4. ÃüÁîÐÐÊäÈënode app.jsÔËÐÐ£¬¶Ë¿ÚÄ¬ÈÏÊÇ8881£¬¿ÉÒÔ×Ô¼ºÐÞ¸Ä¡£
+ 1. cloneæ•´ä¸ªé¡¹ç›®ï¼Œå›¾ç‰‡åˆ†ç±»åœ¨uploadsä¸‹é¢ä»¥æ–‡ä»¶å¤¹å½¢å¼è¿›è¡Œçš„ã€‚
+ 3. å¿…é¡»å®‰è£…nodejsï¼Œç„¶åŽå‘½ä»¤è¡Œè¿›å…¥é¡¹ç›®ç›®å½•ï¼Œè¾“å…¥npm install å®‰è£…å®Œæ•´ä¾èµ–ã€‚
+ 4. å‘½ä»¤è¡Œè¾“å…¥node app.jsè¿è¡Œï¼Œç«¯å£é»˜è®¤æ˜¯8881ï¼Œå¯ä»¥è‡ªå·±ä¿®æ”¹ã€‚
 
 ---------
 
-##¸ÐÐ»
+##æ„Ÿè°¢
 
-¸ÐÐ»[zhangyuanwei](https://github.com/zhangyuanwei)Ìá¹©µÄimagesÍ¼Æ¬´¦Àí¿â¡£
+æ„Ÿè°¢[zhangyuanwei](https://github.com/zhangyuanwei)æä¾›çš„imageså›¾ç‰‡å¤„ç†åº“ã€‚
