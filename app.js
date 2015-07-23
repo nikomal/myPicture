@@ -171,8 +171,16 @@ app.get('/imageInfo', function(req, res){
     });
 });
 
+app.get('/order', function(req, res){
+    database.orderByDefault(5, null, function (data) {
+        console.log(data);
+        res.send(data);
+    });
+});
+
 //database.init();
 
+/*
 database.orderByTime(function(data){
     console.log(data);
-});
+});*/
