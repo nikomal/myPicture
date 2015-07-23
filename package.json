@@ -7,11 +7,17 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "coffee",
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:EveCoffee/myPicture.git"
+  },
   "license": "MIT",
   "dependencies": {
     "body-parser": "^1.13.2",
     "express": "^4.13.1",
     "images": "^2.1.6",
+    "mongoose": "^4.0.8",
+    "mongoose-auto-increment": "^4.0.0",
     "multer": "^0.1.8",
     "path": "^0.11.14"
   },

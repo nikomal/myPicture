@@ -9,8 +9,9 @@ var express    = require('express'),
     multer     = require('multer'),
     fs         = require('fs'),
     //sharp      = require('sharp'),
-    images     = require('images'),
-    imageCore  = require('./server/module/image-core.js');
+    //images     = require('images'),
+    imageCore  = require('./server/module/image-core.js'),
+    database  = require('./server/module/database.js');
 
 var app = express();
 
@@ -168,4 +169,10 @@ app.get('/imageInfo', function(req, res){
     imageCore.imageInfo(path, function(size){
         res.send(size);
     });
+});
+
+//database.init();
+
+database.orderByTime(function(data){
+    console.log(data);
 });

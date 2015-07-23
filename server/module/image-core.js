@@ -4,14 +4,14 @@
 
 var images = require('images');
 
-//指定图片大小，width必须，height可选，无height自动等比缩放
+//鎸囧畾鍥剧墖澶у皬锛寃idth蹇呴』锛宧eight鍙�夛紝鏃爃eight鑷姩绛夋瘮缂╂斁
 var imageSet =  function(path, size1, callback){
 
     var size, width, height, image;
 
     image = images(path);
 
-    size = size1 || 400; //默认宽为400
+    size = size1 || 400; //榛樿瀹戒负400
 
     if(typeof size == 'object'){
         width = size.width || 400;
@@ -33,7 +33,7 @@ var imageSet =  function(path, size1, callback){
 
 };
 
-// 返回图像大小
+// 杩斿洖鍥惧儚澶у皬
 var imageInfo = function(path, callback){
 
     var image;
@@ -45,7 +45,7 @@ var imageInfo = function(path, callback){
 
 };
 
-// 批量返回图像大小
+// 鎵归噺杩斿洖鍥惧儚澶у皬
 var imageInfoAll = function(filesPath, callback){
 
     var filesPathList = [];
@@ -65,7 +65,6 @@ var imageInfoAll = function(filesPath, callback){
         }
 
     });
-    console.log(filesPathList);
     callback(filesPathList);
 };
 
