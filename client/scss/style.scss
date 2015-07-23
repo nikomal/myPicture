@@ -1,0 +1,38 @@
+@charset "UTF-8";
+
+$main-color: rgb(228, 76, 101);
+
+/*公共样式*/
+
+.cc-pagination{
+
+  &>li{
+    $height: 42px;
+
+    float: left;
+    width: 45px;
+    height: $height;
+
+    margin-left: 5px;
+
+    line-height: $height;
+    text-align: center;
+
+    color: #555;
+    background-color: #eaeaeb;
+
+    &.active{
+      color: #fff;
+      background-color: $main-color;
+    }
+
+    a{
+      display: block;
+      color: #555;
+
+      &:hover{
+        color: $main-color;
+      }
+    }
+  }
+}

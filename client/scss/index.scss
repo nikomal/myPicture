@@ -1,7 +1,7 @@
 $main-color: rgb(228, 76, 101);
 
 body{
-  background-color: #1c1d26;
+  background-color: #f7f7f7;
 }
 .container{
   width: 1200px;
@@ -20,10 +20,11 @@ body{
   line-height: 60px;
 
   padding: 0 25px;
+  margin-bottom: 25px;
 
   color: #fff;
-  background: rgba(39, 40, 51, 0.965);
-  box-shadow: 0 0 0.25em 0 rgba(0, 0, 0, 0.25);
+  background: #292E32;
+  //box-shadow: 0 0 0.25em 0 rgba(0, 0, 0, 0.25);
 
   .logo{
     float: left;
@@ -68,7 +69,7 @@ body{
       transition: all 0.5s;
 
       img{
-        box-shadow: 0 1px 5px 0 rgba(255,255,255,0.3);
+        box-shadow: 0 3px 5px 0 rgba(0, 0, 0, 0.08);
       }
     }
   }

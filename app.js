@@ -48,10 +48,12 @@ app.post('/upload', function(req, res){
     res.send(req.files);
 });
 
+//分页输出图片，默认20张，第一页
 app.get('/imgList', function(req, res){
 
-    var classes, path;
+    var classes, path, page;
 
+    page = req.query.page || '1';
     classes = req.query.c || 'lol';
     path = './uploads/'+classes+'/';
 
@@ -69,7 +71,7 @@ app.get('/imgList', function(req, res){
 
     });*/
 
-    database.orderByDefault(1, null, function (data) {
+    database.orderByDefault(classes, page, null, function (data) {
         data = data.map(function (element, index) {
             element.path = path + element.path;
             return element;
@@ -79,6 +81,18 @@ app.get('/imgList', function(req, res){
         });
     })
 
+});
+//返回图片的页数
+app.get('/imgListPageLength', function(req, res){
+
+    var limit, classes;
+
+    classes = req.query.c || 'lol';
+    limit = req.query.limit || 20;
+
+    database.orderByDefault(classes, null, 0, function (data) {
+        res.send(Math.ceil((data.length)/limit).toString());
+    })
 });
 
 app.get('/imgResize', function(req, res){
@@ -191,7 +205,6 @@ app.get('/resort',function(req, res){
         i     = parseInt(req.query.i),
         index = parseInt(req.query.index);
 
-    console.log(page, i, index);
     if(page==undefined || i==undefined || index==undefined){
         res.send('fuck,还有值没传过来，page、i、index，请自查');
         return false;

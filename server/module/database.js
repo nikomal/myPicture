@@ -88,13 +88,25 @@ var updateById = function(id, updateData, callback){
     })
 };
 
-//默认排序  根据插入数序
-var orderByDefault = function(page, limit, callback){
+//默认排序 以写入数据库时间排序
+var orderByDefault = function(classes, page, limit, callback){
 
+    classes = classes || {};
     page  = page || 1;
-    limit = limit || 20;
 
-    model.find({}, function (err, data) {
+    //如果值为0，就输出全部结果
+    if(limit != 0){
+        limit = limit || 20;
+    }
+
+    if( typeof classes!= 'object'){
+        classes = {classes: classes};
+    }
+
+    model.find(classes, function (err, data) {
+        if(err){
+            console.log(err);
+        }
         callback(data);
     }).sort({orderByDefault: 1})
         .limit(limit)
@@ -105,7 +117,7 @@ var orderByDefault = function(page, limit, callback){
 //找到数据库的默认排序最大值，并设置排序初始值
 var findTheBig = function(callback){
 
-    orderByDefault(null, null, function(data){
+    orderByDefault(null, null, null, function(data){
         if(data.length>0){
             orderByStart = data[data.length-1].orderByDefault+1;
             callback(data[data.length-1].orderByDefault+1);
@@ -214,7 +226,7 @@ updateById(1071, {orderByDefault: 1123}, function(data){
 
 //数据库初始化
 function init(){
-    fs.readdir('./uploads/lol',function (err, files) {
+    fs.readdir('./uploads/girl',function (err, files) {
 
         if(err){
             console.log(err);
@@ -225,7 +237,8 @@ function init(){
             files.forEach(function (element, index) {
                 insertData({
                     name: element,
-                    path: element
+                    path: element,
+                    classes: 'girl'
                 },function(response){
                     console.log(response);
                 })

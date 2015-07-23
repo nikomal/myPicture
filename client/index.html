@@ -4,26 +4,26 @@
     <meta charset="UTF-8">
     <title>美女图片</title>
     <link rel="stylesheet" href="css/ccKit.css"/>
-    <link rel="stylesheet/less" href="css/index.less"/>
-    <style>
-
-    </style>
+    <link rel="stylesheet" href="css/style.css"/>
+    <link rel="stylesheet" href="css/index.css"/>
 </head>
 <body>
 
 <div class="header cc-x24">
-    <div class="logo">
-        Picture
+    <div class="cc-container">
+        <div class="logo">
+            Picture
+        </div>
+        <ul class="menu">
+            <li><a href="">全部图片</a></li>
+            <li><a href="">美女</a></li>
+            <li><a href="">风景</a></li>
+            <li><a href="">明星</a></li>
+            <li><a href="">壁纸</a></li>
+            <li><a href="">清新</a></li>
+            <li><a href="">动漫</a></li>
+        </ul>
     </div>
-    <ul class="menu">
-        <li><a href="">全部图片</a></li>
-        <li><a href="">美女</a></li>
-        <li><a href="">风景</a></li>
-        <li><a href="">明星</a></li>
-        <li><a href="">壁纸</a></li>
-        <li><a href="">清新</a></li>
-        <li><a href="">动漫</a></li>
-    </ul>
 </div>
 
 <div class="main cc-x24 cc-clearfix">
@@ -34,15 +34,29 @@
 
         </ul>
 
+        <ul class="cc-pagination cc-right">
+
+        </ul>
     </div>
 
 </div>
 
-<script src="plugins/less.min.js"></script>
 <script src="js/jquery.min.js"></script>
 <script>
 
     'use strict';
+
+    Array.prototype.max = function() {
+        var max = this[0];
+        var len = this.length;
+        for (var i = 1; i < len; i++){
+            if (this[i] > max) {
+                max = this[i];
+            }
+        }
+        return max;
+    };
+
     (function($){
 
         $.fn.lazyLoad = function(){
@@ -91,7 +105,7 @@
 
         $.fn.Masonry = function () {
             var _this = $(this);
-            var _left, _top, _width, height;
+            var _width, height;
 
             _width = _this.find('>li').outerWidth();
 
@@ -112,6 +126,7 @@
                 li.css({'left': _width*num, 'top': heights[num]});
                 heights[num] += li.outerHeight();
             });
+            _this.css('height',heights.max());
         }
 
     })(jQuery);
@@ -120,35 +135,64 @@
 
         var _this      = $('.main'),
             imageLayer = _this.find('.image-layer'),
+            pagination = $('.cc-pagination'),
             url        = '/imgList?';
 
         function parseUrl(url){
 
             var dic={};
-
-            if(!url){
-                return false;
-            }
-            url.replace('?','').split('&').forEach(function(element, index){
+            dic.page = 1;// 设置初始值，不然属性会变成只读
+            url.replace('?','').split('&').forEach(function(element){
                 dic[element.split('=')[0]] = element.split('=')[1];
             });
             return dic;
+        }
+        function getPagination(pageActive, pageCount){
+
+            pageActive = parseInt(pageActive);
+            pageCount = parseInt(pageCount);
+            //插入数字页码
+            for(var i = 0; i<pageCount; i++){
+                if(i==pageActive-1){
+                    pagination.append('<li class="active">'+(i+1)+'</li>');
+                }else{
+                    pagination.append('<li><a href="index.html?page='+(i+1)+'">'+(i+1)+'</a></li>');
+                }
+            }
+            //插入上下翻页，和首尾翻页
+            if(pageActive!=1){
+                pagination.prepend('<li><a href="index.html?page='+(pageActive-1)+'">&lt;</a></li>');
+            }
+            if(pageActive>2){
+                pagination.prepend('<li><a href="index.html?page=1">&lt;&lt;</a></li>');
+            }
+            if(pageActive!=pageCount){
+                pagination.append('<li><a href="index.html?page='+(pageActive+1)+'">&gt;</a></li>');
+            }
+            if(pageActive<pageCount-1){
+                pagination.append('<li><a href="index.html?page='+(pageCount+1)+'">&gt;&gt;</a></li>');
+            }
         }
 
         // 判断是否有参数
         var params = parseUrl(location.search);
         if(params.c){
-            url = url+'c='+params.c;
+            url += 'c='+params.c+'&page='+params.page;
+        }else{
+            url += 'page='+params.page;
         }
 
-        $.ajax(url).success(function(response){
+        //获取页码
+        $.ajax('/imgListPageLength').success(function(response){
+            getPagination(params.page, response);
+        });
 
-            response.forEach(function(element,index){
-                console.log(element);
+        //获取图片
+        $.ajax(url).success(function(response){
+            response.forEach(function(element){
                 imageLayer.append('<li><img data-src="'+element.url+'" alt=" " data-width="'+element.width+'" data-height="'+element.height+'"/></li>');
             });
             $('.image-layer').lazyLoad().Masonry();
-
         });
 
     })(jQuery);
