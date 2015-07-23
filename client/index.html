@@ -58,7 +58,6 @@
                 _height = parseInt(_height);
 
                 percent = realWidth/_width;
-                console.log(percent);
                 width = realWidth;
                 height = parseInt(_height*percent);
                 src = 'getImage/?path='+_src+'&width='+width+'&height='+height;
@@ -145,6 +144,7 @@
         $.ajax(url).success(function(response){
 
             response.forEach(function(element,index){
+                console.log(element);
                 imageLayer.append('<li><img data-src="'+element.url+'" alt=" " data-width="'+element.width+'" data-height="'+element.height+'"/></li>');
             });
             $('.image-layer').lazyLoad().Masonry();

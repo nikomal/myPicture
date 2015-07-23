@@ -64,12 +64,35 @@ var findByPath = function(path, callback){
         callback(data);
     })
 };
+var findById = function (id) {
+    if(typeof id != 'number'){
+        try{
+            id = parseInt(id);
+        }catch(e){
+            return false;
+        }
+    }
+    model.find({_id: id}, function(err, data){
+        console.log(data);
+    });
+};
+/**
+ * 根据id更新数据
+ * @param id
+ * @param updateData  对象，包含需要修改的字段和值
+ * @param callback
+ */
+var updateById = function(id, updateData, callback){
+    model.update({_id: id}, updateData, {}, function (err, data) {
+        callback(data);
+    })
+};
 
 //默认排序  根据插入数序
 var orderByDefault = function(page, limit, callback){
 
-    var page  = page || 1,
-        limit = limit || 20;
+    page  = page || 1;
+    limit = limit || 20;
 
     model.find({}, function (err, data) {
         callback(data);
@@ -117,16 +140,81 @@ var insertData = function(obj, callback){
 
 };
 
-//时间排序， 貌似没用，一秒完成上百个，都一样哪来的顺序
-var orderByTime = function(callback){
-    model.find({},null,{_id: 1},function(err, data){
-        callback(data);
+var reSortById = function(page, i, index, callback){
+
+    orderByDefault(page, null, function(list){
+        //对象的克隆方法
+        Object.prototype.clone = function(){
+            var objClone;
+            if (this.constructor == Object){
+                objClone = new this.constructor();
+            }else{
+                objClone = new this.constructor(this.valueOf());
+            }
+            for(var key in this){
+                if ( objClone[key] != this[key] ){
+                    if ( typeof(this[key]) == 'object' ){
+                        objClone[key] = this[key].clone();
+                    }else{
+                        objClone[key] = this[key];
+                    }
+                }
+            }
+            objClone.toString = this.toString;
+            objClone.valueOf = this.valueOf;
+            return objClone;
+        };
+
+        var _list, temp;
+
+        temp = list[i];
+
+        //克隆list
+        _list = list.clone();
+
+
+        //找到对应位置的元素剔除，然后指定位置添加
+        list.splice(i, 1);
+        list.splice(index, 0, temp);
+
+
+        //修改orderByDefault为原来的顺序
+        _list.forEach(function (element, index) {
+            list[index].orderByDefault = element.orderByDefault;
+        });
+
+        list.forEach(function(element, index){
+            if(index>6){
+                return false;
+            }
+            //console.log(list[index]._id, _list[index]._id);
+            //console.log(list[index].orderByDefault, _list[index].orderByDefault);
+        });
+
+
+        list.forEach(function (element, index) {
+            updateById(element._id, {
+                orderByDefault: element.orderByDefault
+            },function(data){
+                console.log(data);
+            })
+        });
+
+        callback({
+            status: 200,
+            msg: 'ok'
+        });
     })
 };
 
+/*findById(1071);
+updateById(1071, {orderByDefault: 1123}, function(data){
+    console.log(data);
+});*/
+
 //数据库初始化
 function init(){
-    fs.readdir('./uploads/girl',function (err, files) {
+    fs.readdir('./uploads/lol',function (err, files) {
 
         if(err){
             console.log(err);
@@ -157,5 +245,5 @@ findTheBig(function () {
 exports.init = init;
 exports.findByPath = findByPath;
 exports.insertData = insertData;
-exports.orderByTime = orderByTime;
 exports.orderByDefault = orderByDefault;
+exports.reSortById = reSortById;

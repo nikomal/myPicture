@@ -49,27 +49,35 @@ app.post('/upload', function(req, res){
 });
 
 app.get('/imgList', function(req, res){
+
     var classes, path;
 
-    console.log(req.query.c);
     classes = req.query.c || 'lol';
     path = './uploads/'+classes+'/';
 
-    fs.readdir(path, function(err, files){
+    /*fs.readdir(path, function(err, files){
 
         if(err){
             res.send(err);
         }
-
         files = files.map(function(element, index){
             return path+element;
         });
-
         imageCore.imageInfoAll(files, function(fileList){
             res.send(fileList);
         })
 
-    });
+    });*/
+
+    database.orderByDefault(1, null, function (data) {
+        data = data.map(function (element, index) {
+            element.path = path + element.path;
+            return element;
+        });
+        imageCore.imageInfoAll(data, function(fileList){
+            res.send(fileList);
+        });
+    })
 
 });
 
@@ -176,6 +184,23 @@ app.get('/order', function(req, res){
         console.log(data);
         res.send(data);
     });
+});
+
+app.get('/resort',function(req, res){
+    var page  = parseInt(req.query.page),
+        i     = parseInt(req.query.i),
+        index = parseInt(req.query.index);
+
+    console.log(page, i, index);
+    if(page==undefined || i==undefined || index==undefined){
+        res.send('fuck,还有值没传过来，page、i、index，请自查');
+        return false;
+    }else{
+        database.reSortById(page, i, index, function (data) {
+            res.send(data);
+        })
+    }
+
 });
 
 //database.init();

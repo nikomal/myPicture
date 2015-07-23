@@ -50,8 +50,12 @@ var imageInfoAll = function(filesPath, callback){
 
     var filesPathList = [];
 
-    filesPath.forEach(function(path, index){
-        var image;
+    filesPath.forEach(function(element, index){
+
+        var image, path;
+
+        path = element.path;
+
         try{
             image = images(path);
         }catch(e){
