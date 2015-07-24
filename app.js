@@ -216,7 +216,7 @@ app.get('/resort',function(req, res){
 
 });
 
-//database.init();
+//database.init('lol');
 
 /*
 database.orderByTime(function(data){

@@ -57,8 +57,63 @@
         return max;
     };
 
+    //把url的?后面的参数转换成对象
+    String.prototype.urlDecode = function(){
+
+        var _this, dic;
+        if(this.substr(0,1)=='?'){
+            _this = this.substr(1);
+        }else{
+            _this = this;
+        }
+        _this = decodeURI(_this);
+        dic = {};
+        _this.split('&').forEach(function(element){
+            var array = element.split('=');
+            dic[array[0]] = array[1];
+        });
+        return dic;
+    };
+
+    //把对象转换成get字符串形式，开头会带?
+    String.prototype.urlEncode = function () {
+
+        var s, json;
+
+        s = '?';
+        json = JSON.parse(this);
+
+        for(var i in json){
+            if(i == 'urlEncode'){
+                continue;
+            }
+            s += i+'='+json[i]+'&';
+        }
+        if(s.substr(s.length-1)=='&'){
+            s = s.substr(0, s.length-1);
+        }
+
+        s = encodeURI(s);
+        return s;
+    };
+
+    //get查询字段的添加，有会更新，无则增加
+    String.prototype.queryUpdate = function (json) {
+        var dic = this.urlDecode();
+        for(var i in json){
+            dic[i] = json[i];
+        }
+        return JSON.stringify(dic).urlEncode();
+    };
+    //检测get字符串是否含有字段
+    String.prototype.checkField = function(field){
+        var dic = this.urlDecode();
+        return dic[field] ? true : false;
+    };
+
     (function($){
 
+        //图片延迟加载。 只加载实际需要的大小
         $.fn.lazyLoad = function(){
             var _this = $(this);
             var imgUrl, imgWidth, imgHeight, realWidth;
@@ -103,6 +158,7 @@
             return this;
         };
 
+        //瀑布流
         $.fn.Masonry = function () {
             var _this = $(this);
             var _width, height;
@@ -136,7 +192,8 @@
         var _this      = $('.main'),
             imageLayer = _this.find('.image-layer'),
             pagination = $('.cc-pagination'),
-            url        = '/imgList?';
+            url        = '/imgList',
+            getPageUrl = '/imgListPageLength';
 
         function parseUrl(url){
 
@@ -147,20 +204,31 @@
             });
             return dic;
         }
+        //输出分页
         function getPagination(pageActive, pageCount){
+
+            var domain, pathName, query, _page;
 
             pageActive = parseInt(pageActive);
             pageCount = parseInt(pageCount);
+
+            pathName = location.pathname;
+            domain = location.origin;
+            query = location.search;
+
             //插入数字页码
             for(var i = 0; i<pageCount; i++){
                 if(i==pageActive-1){
                     pagination.append('<li class="active">'+(i+1)+'</li>');
                 }else{
-                    pagination.append('<li><a href="index.html?page='+(i+1)+'">'+(i+1)+'</a></li>');
+                    _page = i+1;
+                    query = query.queryUpdate({page: _page});
+                    pagination.append('<li><a href="'+pathName+query+'">'+(i+1)+'</a></li>');
                 }
             }
             //插入上下翻页，和首尾翻页
             if(pageActive!=1){
+                _page = i+1;
                 pagination.prepend('<li><a href="index.html?page='+(pageActive-1)+'">&lt;</a></li>');
             }
             if(pageActive>2){
@@ -175,24 +243,32 @@
         }
 
         // 判断是否有参数
-        var params = parseUrl(location.search);
-        if(params.c){
-            url += 'c='+params.c+'&page='+params.page;
+        var params = location.search.urlDecode();
+        if(location.search.checkField('c')){
+            url += location.search.queryUpdate({c: params.c, page: params.page});
+            getPageUrl += location.search.queryUpdate({c: params.c});
+            //url += 'c='+params.c+'&page='+params.page;
         }else{
-            url += 'page='+params.page;
+            //url += 'page='+params.page;
+            url += location.search.queryUpdate({page: params.page});
         }
 
         //获取页码
-        $.ajax('/imgListPageLength').success(function(response){
+        $.ajax(getPageUrl).success(function(response){
+            params.page = params.page || 1;
             getPagination(params.page, response);
+        }).error(function(e){
+            console.log(e.statusText);
         });
 
-        //获取图片
+        //获取图片并渲染
         $.ajax(url).success(function(response){
             response.forEach(function(element){
                 imageLayer.append('<li><img data-src="'+element.url+'" alt=" " data-width="'+element.width+'" data-height="'+element.height+'"/></li>');
             });
             $('.image-layer').lazyLoad().Masonry();
+        }).error(function(e){
+            console.log(e);
         });
 
     })(jQuery);

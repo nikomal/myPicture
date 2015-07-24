@@ -225,8 +225,9 @@ updateById(1071, {orderByDefault: 1123}, function(data){
 });*/
 
 //数据库初始化
-function init(){
-    fs.readdir('./uploads/girl',function (err, files) {
+function init(classes){
+    classes = classes || 'girl';
+    fs.readdir('./uploads/'+classes,function (err, files) {
 
         if(err){
             console.log(err);
@@ -238,7 +239,7 @@ function init(){
                 insertData({
                     name: element,
                     path: element,
-                    classes: 'girl'
+                    classes: classes
                 },function(response){
                     console.log(response);
                 })
