@@ -7,6 +7,10 @@ body{
   width: 1200px;
   margin-left: auto;
   margin-right: auto;
+
+  @media (min-width: 720px) and (max-width: 1180px) {
+    width: 100%;
+  }
 }
 .clearfix{
   content: ' ';
@@ -70,6 +74,10 @@ body{
 
       img{
         box-shadow: 0 3px 5px 0 rgba(0, 0, 0, 0.08);
+      }
+
+      @media (max-width: 1180px) and (min-width: 720px)  {
+        width: 33%;
       }
     }
   }

@@ -54,25 +54,11 @@ app.get('/imgList', function(req, res){
     var classes, path, page;
 
     page = req.query.page || '1';
-    classes = req.query.c || 'lol';
-    path = './uploads/'+classes+'/';
-
-    /*fs.readdir(path, function(err, files){
-
-        if(err){
-            res.send(err);
-        }
-        files = files.map(function(element, index){
-            return path+element;
-        });
-        imageCore.imageInfoAll(files, function(fileList){
-            res.send(fileList);
-        })
-
-    });*/
+    classes = req.query.c;
 
     database.orderByDefault(classes, page, null, function (data) {
         data = data.map(function (element, index) {
+            path = './uploads/'+element.classes+'/';
             element.path = path + element.path;
             return element;
         });
@@ -87,7 +73,7 @@ app.get('/imgListPageLength', function(req, res){
 
     var limit, classes;
 
-    classes = req.query.c || 'lol';
+    classes = req.query.c;
     limit = req.query.limit || 20;
 
     database.orderByDefault(classes, null, 0, function (data) {
