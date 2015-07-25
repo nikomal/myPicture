@@ -135,7 +135,7 @@ String.prototype.checkField = function(field){
     };
 
     //瀑布流
-    $.fn.Masonry = function () {
+    $.fn.Masonry = function (length) {
         var _this = $(this);
         var __this = this;
         var _width, height, windowWidth;
@@ -144,11 +144,9 @@ String.prototype.checkField = function(field){
             _width = _this.find('>li').outerWidth();
             windowWidth = $(window).width();
 
-            console.log(_this.find('>li').eq(0).width());
             var  heights = [0, 0, 0, 0, 0];
-
-            if(windowWidth<1180 && windowWidth>720){
-                heights.length = 3;
+            if(length){
+                heights.length = length;
             }
 
             _this.find('>li').each(function (index, element) {
@@ -157,14 +155,12 @@ String.prototype.checkField = function(field){
                 li.css({'left': _width*num, 'top': heights[num]});
                 heights[num] += li.outerHeight();
             });
+
             _this.css('height',heights.max());
         }
 
         load();
 
-        $(window).resize(function(){
-            load();
-        });
     }
 
 })(jQuery);

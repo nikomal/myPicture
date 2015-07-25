@@ -164,7 +164,12 @@ img{
 
   .c-pic-list{
 
+    position: relative;
+
     &>li{
+      position: absolute;
+      left: 0;
+      top: 0;
       float: left;
       width: 25%;
 
@@ -172,6 +177,7 @@ img{
 
       cursor: pointer;
       box-sizing: border-box;
+      transition: all 0.5s;
 
       @media (min-width: 360px){
         width: 50%;
@@ -244,14 +250,13 @@ img{
           }
         }
       }
-      //图片标题
+
       .c-title{
         position: relative;
         padding-left: 10px;
         line-height: 30px;
       }
-      
-      //更多
+
       .c-more{
         $border-color: #ccc;
 
@@ -269,7 +274,6 @@ img{
           }
         }
 
-        //三角形
         .c-polygon{
           display: none;
 
@@ -286,7 +290,6 @@ img{
           z-index: 2;
         }
 
-        //三角形边框
         .c-polygon-border{
           border-top-color: #fff;
           margin-bottom: 1px;
