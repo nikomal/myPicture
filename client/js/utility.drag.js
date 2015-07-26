@@ -23,7 +23,7 @@ Drag.prototype={
 	init:function(){
 		var _this=this;
 		if(this.cfg.isChildDrag){
-			this.cfg.$obj.on('mousedown',function(ev){
+			this.cfg.$obj.on('mousedown',this.cfg.dragSelector,function(ev){
 				ev.stopPropagation();
 				_this.bindFnDown(ev);
 				return false;

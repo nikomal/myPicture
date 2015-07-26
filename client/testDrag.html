@@ -35,7 +35,9 @@
 			}).init();
 
 			new Drag({
-				$obj:$(divs[4])
+				$obj:$(divs[2]),
+				isChildDrag:true,
+				dragSelector:'div'
 			}).init();
 
 
@@ -181,7 +183,7 @@
 	<div id="div1">拖拽正常</div>
 	<div id="div2">具有外边距</div>
 	<div id="div3">
-		<div id="div4">相对于外层div定位</div>
+		<div id="div4">相对于外层div定位,子元素拖拽</div>
 	</div>
 
 
