@@ -84,7 +84,7 @@
         var _this, li, moreBtn;
         _this   = $('.c-pic-list');
 
-        $.ajax('http://127.0.0.1:8881/imgList?c=%E9%A3%8E%E6%99%AF&page=2')
+        $.ajax('http://127.0.0.1:8881/imgList?c=lol&page=3')
                 .success(function (response) {
                     response.forEach(function (element, index) {
                         var html = '<li draggable="true">'+
@@ -133,19 +133,22 @@
 
                     _this.drag(function(start,end){
                         var _temp = li.eq(start);
-                        console.log(start,end);
                         li.eq(start).remove();
                         li.eq(end).before(_temp);
                         li = _this.find('>li');
 
-                        _this.Masonry(4);
+                        _this.Masonry(3);
                     });
+
+                    setTimeout(function () {
+                        _this.Masonry(3);
+                    },500)
                 });
 
 
 
 
-        
+
     })(jQuery);
 
 </script>
