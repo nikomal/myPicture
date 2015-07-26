@@ -70,11 +70,17 @@ img{
       cursor: pointer;
       &:hover{
         color: #fff;
+        a{
+          color: #fff;
+        }
       }
       &.active{
         border-left: 3px solid $main-color;
         background-color: #292a2d;
         color: #fff;
+      }
+      a{
+        color: #aaabab;
       }
       @media (max-width: 960px){
         display: none;
@@ -140,6 +146,7 @@ img{
         &>li{
           position: inherit;
           display: block;
+
         }
       }
     }

@@ -128,6 +128,16 @@ var findTheBig = function(callback){
     });
 
 };
+//找到图片分类
+var findTheClasses = function (callback) {
+    model.find({}, function (err, data) {
+        var classesList = {};
+        data.forEach(function (element, index) {
+            classesList[element.classes] = '';
+        });
+        callback(Object.keys(classesList));
+    });
+};
 
 //插入数据
 var insertData = function(obj, callback){
@@ -256,8 +266,10 @@ findTheBig(function () {
     
 });  //初始化最大值
 
+
 exports.init = init;
 exports.findByPath = findByPath;
+exports.findTheClasses = findTheClasses;
 exports.insertData = insertData;
 exports.orderByDefault = orderByDefault;
 exports.reSortById = reSortById;

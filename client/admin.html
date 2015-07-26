@@ -22,21 +22,6 @@
         &#xe60d;
     </div>
     <ul class="c-classes  js-album">
-        <li>
-            全部 (1255)
-        </li>
-        <li>
-            风景 (121)
-        </li>
-        <li>
-            人物 (331)
-        </li>
-        <li class="active">
-            游戏 (258)
-        </li>
-        <li>
-            自拍 (155)
-        </li>
     </ul>
 
 </div>
@@ -84,7 +69,8 @@
         var _this, li, moreBtn;
         _this   = $('.c-pic-list');
 
-        $.ajax('http://127.0.0.1:8881/imgList?c=lol&page=3')
+        //渲染图片
+        $.ajax('http://127.0.0.1:8881/imgList?page=1')
                 .success(function (response) {
                     response.forEach(function (element, index) {
                         var html = '<li draggable="true">'+
@@ -145,6 +131,11 @@
                     },500)
                 });
 
+        $.ajax('/imgClasses').success(function (response) {
+            response.forEach(function (element, index) {
+                $('.c-classes').append('<li><a href="admin.html?c='+element+'">'+element+'</a></li>');
+            })
+        })
 
 
 

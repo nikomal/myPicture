@@ -81,6 +81,12 @@ app.get('/imgListPageLength', function(req, res){
         res.send(Math.ceil((data.length)/limit).toString());
     })
 });
+//返回图片的分类
+app.get('/imgClasses', function(req, res){
+    database.findTheClasses(function (data) {
+        res.send(data);
+    })
+});
 
 app.get('/imgResize', function(req, res){
 
