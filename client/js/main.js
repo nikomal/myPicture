@@ -163,4 +163,67 @@ String.prototype.checkField = function(field){
 
     }
 
+    $.fn.drag = function (callback) {
+        var _this = $(this);
+        var li = _this.find('>li');
+
+        var dragElement, dragIndex;
+
+        dragElement = null;
+        dragIndex = null;
+
+        var dropInit = function () {
+            _this.find('>li').each(function (index, element) {
+
+                element.onselectstart = function () {
+                    return false;
+                };
+                element.ondragstart = function (ev) {
+                    dragIndex = index;
+                    dragElement = ev.target;
+                    return true;
+                };
+                element.ondragend = function (ev) {
+
+                    dragElement = null;
+                    return false;
+                };
+
+                element.ondragover = function (ev) {
+                    ev.preventDefault();
+                    return true;
+                };
+                element.ondragenter = function (ev) {
+                    return true;
+                };
+                element.ondrop = function (ev) {
+                    if(dragElement){
+                        callback(dragIndex, index);
+                        dropRemove();
+                    }
+                    return false;
+                };
+
+            });
+        };
+
+        var dropRemove = function () {
+            _this.find('>li').each(function(index, element){
+                element.onselectstart = null;
+                element.ondragstart = null;
+                element.ondragend = null;
+
+                element.ondragover = null;
+                element.ondragenter = null;
+                element.ondrop = null;
+            });
+            dropInit();
+        };
+
+        dropInit();
+
+        return this;
+
+    }
+
 })(jQuery);

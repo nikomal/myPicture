@@ -202,7 +202,7 @@ app.get('/resort',function(req, res){
 
 });
 
-//database.init('lol');
+//database.init('风景');
 
 /*
 database.orderByTime(function(data){

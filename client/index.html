@@ -55,15 +55,6 @@
             url        = '/imgList',
             getPageUrl = '/imgListPageLength';
 
-        function parseUrl(url){
-
-            var dic={};
-            dic.page = 1;// 设置初始值，不然属性会变成只读
-            url.replace('?','').split('&').forEach(function(element){
-                dic[element.split('=')[0]] = element.split('=')[1];
-            });
-            return dic;
-        }
         //输出分页
         function getPagination(pageActive, pageCount){
 
@@ -78,13 +69,17 @@
 
             //插入数字页码
             for(var i = 0; i<pageCount; i++){
-                if(i==pageActive-1){
-                    pagination.append('<li class="active">'+(i+1)+'</li>');
-                }else{
-                    _page = i+1;
-                    query = query.queryUpdate({page: _page}); //更新页面的值
-                    pagination.append('<li><a href="'+pathName+query+'">'+_page+'</a></li>');
+                if(i-pageActive < 2  &&  i-pageActive > -4){
+                    console.log(i,pageActive,i-pageActive);
+                    if(i==pageActive-1){
+                        pagination.append('<li class="active">'+(i+1)+'</li>');
+                    }else{
+                        _page = i+1;
+                        query = query.queryUpdate({page: _page}); //更新页面的值
+                        pagination.append('<li><a href="'+pathName+query+'">'+_page+'</a></li>');
+                    }
                 }
+
             }
             //插入上下翻页，和首尾翻页
             //上翻页
