@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title></title>
+	<style>
+		#div1{width:100px;height:100px;background:red;position:absolute;top:100px;left:100px;}
+
+		#div2{width:100px;height:100px;background:#002EBE;position:absolute;top:100px;left:100px;margin-top:100px;}
+
+		#div3{width:200px;height:200px;border:1px solid black;position:relative;top:200px;left:200px;}
+		#div4{width:100px;height:100px;background:blue;position:absolute;top:50px;left:50px;}
+
+		#ul1{width:660px;position:relative;margin:10px auto;}
+		#ul1	li{width:200px;height:150px;margin:10px;float:left;list-style:none;background:#00ff00;}
+
+		#ul2{width:660px;position:relative;margin:700px auto;}
+		#ul2	li{width:200px;height:150px;margin:10px;float:left;list-style:none;background:#00ff00;}
+
+	</style>
+	<script src="js/jquery.min.js"></script>
+	<script type="text/javascript" src="js/utility.drag.js"></script>
+	<script>
+		$(function(){
+			var divs=$('div' );
+
+			var drag=	new Drag({
+					$obj:$(divs[0])
+				}).init();
+
+
+
+			new Drag({
+				$obj:$(divs[1])
+			}).init();
+
+			new Drag({
+				$obj:$(divs[4])
+			}).init();
+
+
+
+
+			var lis=$('#ul1 li' ),
+			    arr=[];
+			for(var i=0;i<lis.length;i++){
+				arr.push([lis[i].offsetLeft,lis[i ].offsetTop]);
+			}
+			for(var i=0;i<lis.length;i++){
+				lis[i ].style.position = 'absolute';
+				lis[i ].style.left=arr[i ][0]+'px';
+				lis[i ].style.top = arr[i][1]+'px'
+				lis[i ].style.margin = 0;
+			}
+
+			var $nearObj=null;
+			for(var i=0;i<lis.length;i++){
+				var li=lis[i ];
+				li.index=i;
+				var drag=new Drag({
+					$obj:$(lis[i]),
+					dragDown:function(drag){
+						drag.stateMap.$obj[0 ].style.zIndex =2;
+					},
+					dragMove:function(drag){//拖拽时的回掉
+						$nearObj&&($nearObj[0].style.backgroundColor='#00ff00');
+
+						$nearObj=drag.utils.getNearObj(drag.stateMap.$obj,lis);
+
+						$nearObj&&($nearObj[0].style.backgroundColor='blue');
+					},
+					dragUp:function(drag){
+						if($nearObj){
+							console.log($nearObj);
+							$nearObj.animate({
+								left:arr[drag.stateMap.$obj[0 ].index][0],
+								top:arr[drag.stateMap.$obj[0 ].index][1]
+							});
+							drag.stateMap.$obj.animate({
+								left:arr[$nearObj[0 ].index][0],
+								top:arr[$nearObj[0 ].index][1]
+							});
+
+							var _index=drag.stateMap.$obj[0 ].index;
+							drag.stateMap.$obj[0 ].index=$nearObj[0 ].index;
+							$nearObj[0 ].index=_index;
+							$nearObj[0].style.backgroundColor='#00ff00';
+							$nearObj=null;
+						}else{
+							drag.stateMap.$obj.animate({
+								left:arr[drag.stateMap.$obj[0 ].index][0],
+								top:arr[drag.stateMap.$obj[0 ].index][1]
+							});
+						}
+						drag.stateMap.$obj[0 ].style.zIndex ='auto';
+					}
+				}).init();
+			}
+//			var drag=new Drag({
+//				$obj:$('#ul1'),
+//				isChildDrag:true,//是否启用子元素拖拽,设置为true时必须设置dragSelector选项
+//				dragSelector:'li', //子元素选择器
+//				dragMove:function(drag){//拖拽时的回掉
+//					var o=drag.utils.getNearObj(drag.stateMap.$obj[0],lis);
+//					o&&(o.style.backgroundColor='blue');
+//				}
+//			}).init();
+
+
+
+//1转换布局后重排
+
+//2复制一份出来进行拖拽
+//效果需要调整
+			var lis2=$('#ul2 li' ),
+			    $nearObj2=null,
+					$ul2=$('#ul2');
+
+			function onmousedownLi(ev){
+				var
+					$this=$(this ),
+					$mirror=$this.clone();
+				$this.css({
+					opacity:0.2,
+					filter:'alpha(opacity=20)'
+				});
+				$ul2.append($mirror);
+				$mirror.css({
+					position:'absolute',
+					width:$this.width(),
+					height:$this.height(),
+					left:$this.position().left,
+					top:$this.position().top,
+					zIndex:9999
+				});
+				ev.target=$mirror;
+				$mirror[0].index=this.index;
+
+				var drag=new Drag({
+					$obj:$mirror,
+					dragMove:function(drag){//拖拽时的回调
+						$nearObj2&&($nearObj2.css( {
+							position : 'static'
+						}));
+
+						$nearObj2=drag.utils.getNearObj(drag.stateMap.$obj,lis2,[lis2[drag.stateMap.$obj[0].index]]);
+
+						$nearObj2&&($nearObj2.css({position : 'relative'}),$nearObj2.animate( {
+							left     : 20
+						}));
+
+					},
+					dragUp:function(drag){
+						if($nearObj2){
+							$mirror.remove();
+							$this.css({
+								opacity:1,
+								filter:'alpha(opacity=100)'
+							});
+							$nearObj2.before($this);
+							$nearObj2.css( {
+								position : 'static'
+							});
+							$nearObj2=null;
+						}else{
+
+						}
+
+					}
+				}).init().bindFnDown(ev);
+
+				return false;
+			};
+
+			$('#ul2').on('mousedown','li',onmousedownLi);
+
+		});
+	</script>
+</head>
+<body>
+	<div id="div1">拖拽正常</div>
+	<div id="div2">具有外边距</div>
+	<div id="div3">
+		<div id="div4">相对于外层div定位</div>
+	</div>
+
+
+	<ul id="ul1">
+		<li>1交换</li>
+		<li>2</li>
+		<li>3</li>
+		<li>4</li>
+		<li>5</li>
+		<li>6</li>
+		<li>7</li>
+		<li>8</li>
+		<li>9</li>
+	</ul>
+
+<ul id="ul2">
+	<li>1重排</li>
+	<li>2</li>
+	<li>3</li>
+	<li>4</li>
+	<li>5</li>
+	<li>6</li>
+	<li>7</li>
+	<li>8</li>
+	<li>9</li>
+</ul>
+</body>
+</html>
