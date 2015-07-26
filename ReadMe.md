@@ -10,12 +10,13 @@
 -------------------
 
 
-## Nodejs 开放的api接口
+## 浏览界面  index.html
 
-> /?c=girl 。 返回这个分类下面的所有图片对象列表，对象包含原图片的大小和URL
+> /?c=girl&page=1 。 返回图像列表。c表示分类，空表示所有分类，page表示页数，空表示第一页。
 
-> /getImage/?path=/girl/20150227194035_rVtUF.jpeg&width=230&height=306.  根据传入的width和height返回图片的大小（可选）。path图片的路径（必须）
-> 
+## 管理界面  admin.html
+
+> /?c=girl&page=1。 同上
 
 
 
