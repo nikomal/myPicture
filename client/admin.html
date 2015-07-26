@@ -21,7 +21,7 @@
     <div class="c-close-btn iconfont">
         &#xe60d;
     </div>
-    <ul class="c-classes">
+    <ul class="c-classes  js-album">
         <li>
             全部 (1255)
         </li>
@@ -64,12 +64,17 @@
         closeBtn.click(function(){
             _this.removeClass('open');
         });
-        classes.find('>li').each(function(index, element){
-            $(element).click(function(){
-                $(this).addClass('active').siblings().removeClass('active');
+
+      classes.on('click','li',function(){
+        $(this).addClass('active').siblings('.active').removeClass('active');
                 closeBtn.trigger('click');
-            });
-        })
+      });
+//        classes.find('>li').each(function(index, element){
+//            $(element).click(function(){
+//                $(this).addClass('active').siblings().removeClass('active');
+//                closeBtn.trigger('click');
+//            });
+//        })
 
     })(jQuery);
 
@@ -144,10 +149,14 @@
     })(jQuery);
 
 </script>
+<script type="text/javascript" src="js/utility.drag.js"></script>
+<script type="text/javascript" src="js/admin.js"></script>
+<script type="text/javascript" src="js/admin.album.js"></script>
 <script type="text/javascript" src="js/widget.js"></script>
 <script type="text/javascript" src="js/lightbox/wiget.lightbox.js"></script>
 <script>
     $(function(){
+        admin.initModule($('.js-album'));
         var lightbox=new widget.LightBox();
     });
 </script>
