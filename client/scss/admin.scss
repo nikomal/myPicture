@@ -177,7 +177,7 @@ img{
 
       cursor: pointer;
       box-sizing: border-box;
-      transition: all 0.5s;
+      transition: left 0.5s ,top 0.5s;
 
       @media (min-width: 360px){
         width: 50%;
