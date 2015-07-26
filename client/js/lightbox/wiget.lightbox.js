@@ -10,10 +10,13 @@
  data-caption="desc" 当前图片的描述文字
  */
 ;(function(widget,$){
-	function LightBox(){
+	function LightBox(cfg){
 		this.cfg = {
 			skinClassName:null
 		};
+
+		$.extend(this.cfg,cfg);
+
 		this.$body=$(document.body);
 
 		this.stateMap.iniState=false;//是否初始化过
@@ -88,8 +91,6 @@
 			   + '</div>'
 			   + '</div>';
 		   this.$body.append(mask_html,popWin_html);
-
-
 	   },
 	  bindUI:function(){
 		  var _this=this;
@@ -171,6 +172,9 @@
 
 		  });
 
+		  if (this.cfg.skinClassName) {
+			  this.domMap.$popupWin.addClass(this.cfg.skinClassName);
+		  };
 		  //根据当前点击的元素id获取当前组别的索引
 		  this.stateMap.objIndex=this.getIndexOf();
 
@@ -331,8 +335,11 @@ console.log(_this.stateMap.objWidth,_this.stateMap.objHeight);
 				  this.domMap.$nextBtn.removeClass('disabled' );
 			  }
 		  }
-		  var src=this.stateMap.groupData[this.stateMap.objIndex ].src;
-		  this.loadPicSize(src);
+
+		  this.stateMap.$currentObj={};
+		  this.stateMap.$currentObj.src=this.stateMap.groupData[this.stateMap.objIndex ].src;
+		  this.stateMap.$currentObj.id=this.stateMap.groupData[this.stateMap.objIndex ].id;
+		  this.loadPicSize();
 	  }
 	});
 
