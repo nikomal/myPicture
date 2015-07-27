@@ -133,9 +133,13 @@ var findTheClasses = function (callback) {
     model.find({}, function (err, data) {
         var classesList = {};
         data.forEach(function (element, index) {
-            classesList[element.classes] = '';
+            if(classesList[element.classes]){
+                classesList[element.classes]++;
+            }else{
+                classesList[element.classes] = 1;
+            }
         });
-        callback(Object.keys(classesList));
+        callback(classesList);
     });
 };
 

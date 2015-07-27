@@ -1,3 +1,4 @@
+@charset "UTF-8";
 $main-color: #e05b5b;
 $border-color: #e5e5e5;
 
@@ -65,22 +66,101 @@ img{
     color: #aaabab;
     background-color: #2f3235;
     &>li{
+
+      height: 55px;
       line-height: 55px;
+
       box-sizing: border-box;
       cursor: pointer;
+      overflow: hidden;
+
       &:hover{
         color: #fff;
         a{
           color: #fff;
+        }
+        .edit-ctrl{
+          display: block;
         }
       }
       &.active{
         border-left: 3px solid $main-color;
         background-color: #292a2d;
         color: #fff;
+        a{
+          color: #fff;
+        }
+      }
+
+      //编辑和删除按钮
+      .edit-ctrl{
+        display: none;
+        position: absolute;
+        top: 0;
+        right: 0;
+        color: #999;
+        span{
+          display: block;
+          float: right;
+          margin-right: 10px;
+          &:hover{
+
+            color: #fff;
+            transform: scale(1.2);
+            transition: scale .3s;
+          }
+        }
+      }
+
+      .c-wrapper{
+        position: relative;
+        transition: all .5s;
       }
       a{
-        color: #aaabab;
+        color: #999;
+      }
+      .c-input-group{
+        position: relative;
+        width: 80%;
+        margin-left: auto;
+        margin-right: auto;
+        input{
+          width: 100%;
+          height: 25px;
+
+          padding-left: 5px;
+
+          color: #444;
+          background-color: #f7f7f7;
+          border: none;
+
+        }
+        .iconfont{
+          position: absolute;
+          top: 0;
+          right: -10px;
+          color: $main-color;
+        }
+        .sure,.cancel{
+          display: block;
+          float: left;
+          margin-left: 5px;
+          &:hover{
+            transform: scale(1.2);
+            transition: scale .3s;
+          }
+        }
+        .cancel{
+          color: #ccc;
+        }
+      }
+
+
+      &.edit{
+        .c-wrapper{
+          transform: translateY(-50%);
+        }
+
       }
       @media (max-width: 960px){
         display: none;
