@@ -87,78 +87,7 @@ app.get('/imgClasses', function(req, res){
         res.send(data);
     })
 });
-
-app.get('/imgResize', function(req, res){
-
-    var path = './uploads/girl/1.jpg';
-
-    fs.exists(path ,function(exists){
-
-        if(!exists){
-            res.send('图像路径不存在');
-            return;
-        }
-        var g = gm(path);
-        g.size(function(size){
-            console.log(size);
-        });
-        g.resize(200, 200);
-        g.write('./uploads/girl/1-1.jpg', function (err) {
-            if (!err)
-                console.log('done');
-            else{
-                console.log('写入失败');
-            }
-        });
-        g.toBuffer(function(err, buffer, info){
-            console.log(info);	
-            if(err){
-                console.log(err);
-            }else{
-                //res.send('Content-Type','');
-                res.send(buffer);
-            }
-        })
-
-    });
-
-
-});
-
-app.get('/sharp', function(req, res){
-   
-   var path = './uploads/girl/1.jpg';
-
-    fs.exists(path ,function(exists){
-
-        if(!exists){
-            res.send('图像路径不存在!!!');
-            return;
-        }
-        sharp('./uploads/girl/1.jpg')
-          .resize(200, 200)
-          .toFile('./uploads/girl/1-sharp.jpg', function(err) {
-            if(err)
-                console.log(err);     
-          })
-          .toFormat(sharp.format.jpeg)
-          .toBuffer(function(err, buffer){
-              console.log(buffer.length);
-              if(err){
-                  console.log(err);
-                  res.send('error');
-              }else{
-                  var webpDataURL = 'data:image/jpeg;base64,' + buffer.toString('base64');
-                  res.set('Content-Type', 'image/jpeg');
-                  res.send(buffer);
-              }
-          });
-
-    });
-    
-});
-
-
+//返回指定大小图片
 app.get('/getImage', function(req, res){
 
     var path, width, height;
@@ -192,7 +121,7 @@ app.get('/order', function(req, res){
         res.send(data);
     });
 });
-
+//图片之间的重排序
 app.get('/resort',function(req, res){
     var page  = parseInt(req.query.page),
         i     = parseInt(req.query.i),
@@ -208,7 +137,30 @@ app.get('/resort',function(req, res){
     }
 
 });
+//通过id删除图片
+app.get('/deleteById', function(req, res){
+    var id = req.query.id;
+    if(!id){
+        res.send({
+            status: 500,
+            msg: '不允许传递空值'
+        });
+    }
+    database.deleteById(id, function(data){
+        res.send(data);
+    })
+});
+app.get('/addClass', function (req, res) {
+    var className = req.query.c;
+    if(!className){
+        res.send({
+            status: 500,
+            msg: '不允许传递空值'
+        });
+    }else{
 
+    }
+});
 //database.init('风景');
 
 /*

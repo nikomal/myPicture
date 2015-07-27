@@ -166,6 +166,45 @@ var insertData = function(obj, callback){
 
 };
 
+//删除数据
+var deleteById = function (id, callback) {
+    model.remove({_id: id}, function (err, data) {
+        if(err){
+            callback(err);
+        }else{
+            callback(data.result);
+        }
+    });
+};
+var deleteClass = function (className, callback) {
+    model.remove({classes: className}, function (err, data) {
+        if(err){
+            callback(err);
+        }else{
+            callback(data.result);
+        }
+    })
+};
+
+var addClass = function (className, callback) {
+    fs.exists('./uploads/'+className, function(exists){
+        if(exists){
+            res.send({
+                status: 404,
+                msg: '分类已经存在'
+            })
+        }else{
+            fs.mkdir('./uploads/'+className, function (err) {
+                res.send({
+                    status: 200,
+                    msg: '分类已经创建'
+                })
+            });
+
+        }
+    });
+};
+
 var reSortById = function(page, i, index, callback){
 
     orderByDefault(page, null, function(list){
@@ -233,6 +272,8 @@ var reSortById = function(page, i, index, callback){
     })
 };
 
+
+
 /*findById(1071);
 updateById(1071, {orderByDefault: 1123}, function(data){
     console.log(data);
@@ -277,3 +318,4 @@ exports.findTheClasses = findTheClasses;
 exports.insertData = insertData;
 exports.orderByDefault = orderByDefault;
 exports.reSortById = reSortById;
+exports.deleteById = deleteById;
