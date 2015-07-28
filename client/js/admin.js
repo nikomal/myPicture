@@ -51,7 +51,7 @@ var admin=(function(){
                     '            <div class="c-image-box">'+
                     '                <div class="c-image">'+
                     '                    <div class="c-layer">'+
-                    '                        <img src="'+element.url+'" alt=""/>'+
+                    '                        <img data-src="'+element.url+'" data-width="'+element.width+'" data-height="'+element.height+'" alt=""/>'+
                     '                    </div>'+
                     '                    <div'+
                     '                          data-role="lightbox"'+
@@ -97,12 +97,11 @@ var admin=(function(){
                 li.eq(end).before(_temp);
                 li = _this.find('>li');
 
-                _this.Masonry(3);
+                _this.Masonry(responseCount());
             });
 
-            setTimeout(function () {
-                _this.Masonry(3);
-            },500)
+            _this.lazyLoad().Masonry(responseCount());
+
         });
 
     //加载分类并标记
@@ -150,6 +149,12 @@ var admin=(function(){
     });
 
 
+    $(window).resize(function () {
+        _this.lazyLoad();
+        setTimeout(function () {
+            _this.Masonry(responseCount())
+        },300)
+    })
 
 
 

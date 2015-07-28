@@ -269,11 +269,14 @@ img{
       @media (min-width: 360px){
         width: 50%;
       }
+      @media (min-width: 760px) {
+        width: 33.3333%;
+      }
       @media (min-width: 960px){
-        width: 33%;
+        width: 25%;
       }
       @media (min-width: 1441px){
-        width: 25%;
+        width: 20%;
       }
 
       .c-image-box{

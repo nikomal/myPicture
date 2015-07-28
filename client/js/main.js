@@ -87,6 +87,24 @@ String.prototype.checkField = function(field){
     return dic[field] ? true : false;
 };
 
+//返回响应式栅格列数
+(function ($) {
+
+    window.responseCount = function(){
+        var width = $(window).width();
+        if(width>1400){
+            return 5;
+        }else if(width > 1000){
+            return 4;
+        }else if(width > 760){
+            return 3;
+        }else{
+            return 2;
+        }
+    }
+
+})(jQuery);
+
 (function($){
 
     //图片延迟加载。 只加载实际需要的大小
