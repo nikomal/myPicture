@@ -39,13 +39,125 @@ var admin=(function(){
 //页面渲染
 (function ($) {
 
-    var _this, li, moreBtn, classesList;
-    _this   = $('.c-pic-list');
+    var _this, li, moreBtn, classesList, pagination, getPageUrl, url;
+
+    _this       = $('.c-pic-list');
     classesList = $('.c-classes');
+    pagination = $('.cc-pagination');
+    getPageUrl = '/imgListPageLength';
+    url        = '/imgList';
+
+
+
+    //加载分类并标记
+    $.ajax('/imgClasses').success(function (response) {
+        var total,ClassName;
+
+        total = 0;
+        ClassName = Object.keys(response);
+
+        ClassName.forEach(function (element, index) {
+            total += response[element];
+            classesList.append('<li>'+
+                '                <div class="c-wrapper">'+
+                '                    <a href="admin.html?c='+element+'"><span class="className">'+element+'</span>( 1253 )</a>'+
+                '                    <div class="c-input-group">'+
+                '                        <input type="text" title="请输入要修改的标题" placeholder="请输入要修改的标题"/>'+
+                '                        <span class="iconfont"><span class="sure">&#xe60a;</span>&nbsp<span class="cancel">&#xe60c;</span>&nbsp;</span>'+
+                '                    </div>'+
+                '                    <div class="edit-ctrl iconfont">'+
+                '                        <span class="icon-edit"></span>'+
+                '                        <span class="icon-delete"></span>'+
+                '                    </div>'+
+                '                </div>'+
+                '            </li>');
+        });
+
+        classesList.prepend('<li><a href="admin.html"><span>全部</span>( '+total+' )'+'</a></li>');
+
+        //标记分类
+        if(location.search.checkField('c')){
+            var query = location.search.urlDecode();
+            if(query['c']){
+                classesList.find('>li').each(function (index, element) {
+                    if($(element).find('.className').text()==query['c']){
+                        $(element).addClass('active');
+                    }
+                })
+            }
+
+        }else{
+            classesList.find('>li').eq(0).addClass('active')
+        }
+        classesList.editClasses();
+    });
+
+    //输出分页
+    function getPagination(pageActive, pageCount){
+
+        var domain, pathName, query, _page;
+
+        pageActive = parseInt(pageActive);
+        pageCount = parseInt(pageCount);
+
+        pathName = location.pathname;
+        domain = location.origin;
+        query = location.search;
+
+        //插入数字页码
+        for(var i = 0; i<pageCount; i++){
+            if(i-pageActive < 2  &&  i-pageActive > -4){
+                console.log(i,pageActive,i-pageActive);
+                if(i==pageActive-1){
+                    pagination.append('<li class="active">'+(i+1)+'</li>');
+                }else{
+                    _page = i+1;
+                    query = query.queryUpdate({page: _page}); //更新页面的值
+                    pagination.append('<li><a href="'+pathName+query+'">'+_page+'</a></li>');
+                }
+            }
+
+        }
+        //插入上下翻页，和首尾翻页
+        //上翻页
+        if(pageActive!=1){
+            _page = pageActive-1;
+            query = query.queryUpdate({page: _page});
+            pagination.prepend('<li><a href="'+pathName+query+'">&lt;</a></li>');
+        }
+        //首页
+        if(pageActive>2){
+            _page = 1;
+            query = query.queryUpdate({page: _page});
+            pagination.prepend('<li><a href="'+pathName+query+'">&lt;&lt;</a></li>');
+        }
+        //下翻页
+        if(pageActive!=pageCount){
+            _page = pageActive+1;
+            query = query.queryUpdate({page: _page});
+            pagination.append('<li><a href="'+pathName+query+'">&gt;</a></li>');
+        }
+        //尾页
+        if(pageActive<pageCount-1){
+            _page = pageCount+1;
+            query = query.queryUpdate({page: _page});
+            pagination.append('<li><a href="'+pathName+query+'">&gt;&gt;</a></li>');
+        }
+    }
+
+    // 判断是否有参数
+    var params = location.search.urlDecode();
+    if(location.search.checkField('c')){
+        url += location.search.queryUpdate({c: params.c, page: params.page});
+        getPageUrl += location.search.queryUpdate({c: params.c});
+        //url += 'c='+params.c+'&page='+params.page;
+    }else{
+        //url += 'page='+params.page;
+        url += location.search.queryUpdate({page: params.page});
+    }
 
     //渲染图片
-    $.ajax('http://127.0.0.1:8881/imgList?page=1')
-        .success(function (response) {
+    $.ajax(url).success(function (response) {
             response.forEach(function (element, index) {
                 var html = '<li draggable="true">'+
                     '            <div class="c-image-box">'+
@@ -93,9 +205,15 @@ var admin=(function(){
 
             _this.drag(function(start,end){
                 var _temp = li.eq(start);
-                li.eq(start).remove();
-                li.eq(end).before(_temp);
+                if(start < end){
+                    li.eq(start).remove();
+                    li.eq(end+1).before(_temp);
+                }else if(start > end){
+                    li.eq(start).remove();
+                    li.eq(end).before(_temp);
+                }
                 li = _this.find('>li');
+                console.log(start, end);
 
                 _this.Masonry(responseCount());
             });
@@ -104,54 +222,21 @@ var admin=(function(){
 
         });
 
-    //加载分类并标记
-    $.ajax('/imgClasses').success(function (response) {
-        var total,ClassName;
-
-        total = 0;
-        ClassName = Object.keys(response);
-
-        ClassName.forEach(function (element, index) {
-            total += response[element];
-            classesList.append('<li>'+
-                '                <div class="c-wrapper">'+
-                '                    <a href="admin.html?c='+element+'"><span class="className">'+element+'</span>( 1253 )</a>'+
-                '                    <div class="c-input-group">'+
-                '                        <input type="text" title="请输入要修改的标题" placeholder="请输入要修改的标题"/>'+
-                '                        <span class="iconfont"><span class="sure">&#xe60a;</span>&nbsp<span class="cancel">&#xe60c;</span>&nbsp;</span>'+
-                '                    </div>'+
-                '                    <div class="edit-ctrl iconfont">'+
-                '                        <span class="icon-edit"></span>'+
-                '                        <span class="icon-delete"></span>'+
-                '                    </div>'+
-                '                </div>'+
-                '            </li>');
-        });
-
-        classesList.prepend('<li><a href="admin.html"><span>全部</span>( '+total+' )'+'</a></li>');
-
-        //标记分类
-        if(location.search){
-            var query = location.search.urlDecode();
-            console.log(query['c']);
-            if(query['c']){
-                classesList.find('>li').each(function (index, element) {
-                    if($(element).find('.className').text()==query['c']){
-                        $(element).addClass('active');
-                    }
-                })
-            }
-
-        }else{
-            classesList.find('>li').eq(0).addClass('active')
-        }
-        classesList.editClasses();
+    //获取页码
+    $.ajax(getPageUrl).success(function(response){
+        params.page = params.page || 1;
+        getPagination(params.page, response);
+    }).error(function(e){
+        console.log(e.statusText);
     });
 
 
+
+    var t = null;
     $(window).resize(function () {
         _this.lazyLoad();
-        setTimeout(function () {
+        clearTimeout(t);
+        t = setTimeout(function () {
             _this.Masonry(responseCount())
         },300)
     })
