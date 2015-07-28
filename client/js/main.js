@@ -94,7 +94,7 @@ String.prototype.checkField = function(field){
         var width = $(window).width();
         if(width>1400){
             return 5;
-        }else if(width > 1000){
+        }else if(width > 960){
             return 4;
         }else if(width > 760){
             return 3;
