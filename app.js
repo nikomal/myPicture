@@ -137,6 +137,21 @@ app.get('/resort',function(req, res){
     }
 
 });
+
+//删除分类
+app.get('/deleteClass', function(req, res){
+    var className = req.query.c;
+    if(!className){
+        res.send({
+            status: 500,
+            msg: '不允许传递空值'
+        });
+    }else{
+        database.deleteClass(className, function(data){
+            res.send(data);
+        })
+    }
+});
 //通过id删除图片
 app.get('/deleteById', function(req, res){
     var id = req.query.id;
@@ -161,6 +176,7 @@ app.get('/addClass', function (req, res) {
 
     }
 });
+
 //database.init('风景');
 
 /*

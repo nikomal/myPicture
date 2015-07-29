@@ -319,3 +319,4 @@ exports.insertData = insertData;
 exports.orderByDefault = orderByDefault;
 exports.reSortById = reSortById;
 exports.deleteById = deleteById;
+exports.deleteClass = deleteClass;
