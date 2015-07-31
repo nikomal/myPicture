@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <link rel="stylesheet" href="css/ccKit.css">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/image-Editor.css">
+</head>
+<body>
+
+<div class="ps-tools cc-x4">
+
+</div>
+
+<div class="ps-viewer cc-x20">
+
+    <div class="ps-image">
+        <img class="img" src="../uploads/lol/DJSonaKinetic.jpg" alt="dj">
+    </div>
+
+    <div class="ps-footer">
+        <input type="range" class="scale-range" min="1" value="50" maxlength="100"/>
+    </div>
+
+</div>
+
+<script src="js/jquery.min.js"></script>
+<script>
+
+    (function($){
+
+        var range, psImage,psImg;
+
+        range = $('.scale-range');
+        psImage = $('.ps-image');
+        psImg = psImage.find('.img');
+
+        range.change(function () {
+            var val = range.val();
+            psImg.css('transform', 'scale('+((val-50)/10)+')')
+        })
+
+    })(jQuery);
+
+</script>
+
+</body>
+</html>

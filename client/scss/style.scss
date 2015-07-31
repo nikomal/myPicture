@@ -4,6 +4,7 @@ $main-color: rgb(228, 76, 101);
 
 /*公共样式*/
 
+//分页
 .cc-pagination{
 
   &>li{
@@ -35,4 +36,60 @@ $main-color: rgb(228, 76, 101);
       }
     }
   }
+}
+
+//模态框
+.cc-model{
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, .6);
+  z-index: 1111;
+
+  .cc-model-dialog{
+    width: 500px;
+
+    margin: 50px auto;
+
+    border: 1px solid rgba(0, 0, 0, .2);
+    background-color: #fff;
+    box-shadow: 0 3px 9px rgba(0,0,0,.5);
+    box-sizing: border-box;
+    border-radius: 5px;
+  }
+
+  .cc-model-header, .cc-model-body, .cc-model-footer{
+    padding: 0 10px;
+  }
+
+  .cc-model-header{
+
+    height: 55px;
+    line-height: 55px;
+
+    background-color: #fafafa;
+    border-bottom: 1px solid #e6e6e6;
+    box-sizing: border-box;
+  }
+  .cc-model-body{
+    min-height: 100px;
+    padding-top: 25px;
+    padding-bottom: 25px;
+  }
+  .cc-model-footer{
+    height: 55px;
+    line-height: 55px;
+
+    text-align: right;
+
+    background-color: #fafafa;
+    border-top: 1px solid #e5e5e5;
+    
+    button{
+
+      line-height: 35px;
+      box-sizing: border-box;
+    }
+  }
+
 }

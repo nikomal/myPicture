@@ -185,17 +185,26 @@ var deleteClass = function (className, callback) {
         }
     })
 };
+var deleteAll = function (callback) {
+    model.remove({}, function (err, data) {
+        console.log(data.result);
+        if(typeof callback == 'function'){
+            callback(data.result);
+        }
+    });
+};
+
 
 var addClass = function (className, callback) {
     fs.exists('./uploads/'+className, function(exists){
         if(exists){
-            res.send({
+            callback({
                 status: 404,
                 msg: '分类已经存在'
             })
         }else{
             fs.mkdir('./uploads/'+className, function (err) {
-                res.send({
+                callback({
                     status: 200,
                     msg: '分类已经创建'
                 })
@@ -320,3 +329,5 @@ exports.orderByDefault = orderByDefault;
 exports.reSortById = reSortById;
 exports.deleteById = deleteById;
 exports.deleteClass = deleteClass;
+exports.deleteAll = deleteAll;
+exports.addClass  = addClass;

@@ -37,6 +37,57 @@
     </ul>
 </div>
 
+<div class="cc-model">
+    <div class="cc-model-dialog">
+        <form class="files-upload" action="">
+            <div class="cc-model-content">
+                <div class="cc-model-header">
+                    上传图片
+                    <div class="cc-model-close iconfont">
+
+                    </div>
+                </div>
+                <div class="cc-model-body">
+
+                        <div class="input-group">
+                            <label for="classes">选择分类：</label>
+                            <select name="classes" id="classes">
+                                <option value="新建">新建</option>
+                                <option value="LOL">LOL</option>
+                                <option value="美女">美女</option>
+                                <option value="风景">风景</option>
+                            </select>
+                            &nbsp;&nbsp;&nbsp;
+                            <label for="file">上传文件</label>
+                            <input id="file" type="file" multiple="multiple" accept="image/*" style="display: none">
+                        </div>
+                        <div class="input-group">
+                            <ul class="preview-list success">
+                                <li class="cc-x6">
+                                    <div class="cc-x24">
+                                        <img src="/lol/LOL高清壁纸001.jpg" alt="">
+                                        <div class="progressbar">
+                                            <div class="progress-all"></div>
+                                            <div class="progress-now"></div>
+                                            <img class="success-icon" src="images/success.png" alt="">
+                                        </div>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="input-group">
+
+                        </div>
+                </div>
+                <div class="cc-model-footer">
+                    <button type="submit">上传</button>
+                    <button type="button">取消</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
 <script src="js/jquery.min.js"></script>
 <script src="js/main.js"></script>
 <script type="text/javascript" src="js/utility.drag.js"></script>
@@ -45,11 +96,13 @@
 <script type="text/javascript" src="js/widget.js"></script>
 <script type="text/javascript" src="js/lightbox/wiget.lightbox.js"></script>
 <script>
-    $(function(){
+    $(function () {
         admin.initModule($('.js-album'));
-        var lightbox=new widget.LightBox();
+        var lightbox = new widget.LightBox();
     });
     $('.c-classes').editClasses();
+    $('#classes').createClasses();
+    $('.files-upload').fileUpload();
 </script>
 </body>
 </html>
