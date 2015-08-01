@@ -30,15 +30,57 @@
 
     (function($){
 
+        'use strict';
         var range, psImage,psImg;
+
+        var x = 0,
+            y = 0,
+            startX = 0,
+            startY = 0,
+            scale  = 1,
+            moveX  = 0,
+            moveY  = 0;
+
 
         range = $('.scale-range');
         psImage = $('.ps-image');
         psImg = psImage.find('.img');
 
+        var mouseMoveEvent = function (event) {
+            console.log(psImg.css('transform'));
+            moveX = event.pageX - startX + x;
+            moveY = event.pageY - startY +y;
+            console.log(moveX, moveY);
+            psImg.css('transform',' translate('+moveX+'px, '+(moveY)+'px) ' + 'scale('+scale+')');
+        };
+
         range.change(function () {
-            var val = range.val();
-            psImg.css('transform', 'scale('+((val-50)/10)+')')
+            var val;
+            val = range.val();
+            if(val-50>=0){
+                scale = (val-50)/10;
+            }else{
+                scale = 10/Math.abs(val-50);
+            }
+            psImg.css('transform',' translate('+moveX+'px, '+(moveY)+'px) ' + 'scale('+scale+')');
+        });
+
+        psImage.on('dragstart', function () {
+            return false;
+        });
+        psImage.on('mousedown mousemove mouseup', function (event) {
+            switch (event.type){
+                case 'mousedown':
+                    psImage.on('mousemove', mouseMoveEvent);
+                    startX = event.pageX;
+                    startY = event.pageY;
+                    break;
+                case 'mouseup':
+                    psImage.off('mousemove');
+                    x = moveX;
+                    y = moveY;
+                    break;
+            }
         })
 
     })(jQuery);
