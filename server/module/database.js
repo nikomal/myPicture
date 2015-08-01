@@ -108,7 +108,7 @@ var orderByDefault = function(classes, page, limit, callback){
             console.log(err);
         }
         callback(data);
-    }).sort({orderByDefault: 1})
+    }).sort({orderByDefault: -1})
         .limit(limit)
         .skip((page-1)*20);
 

@@ -333,7 +333,8 @@ var admin = (function () {
     $.fn.fileUpload = function () {
         var _this       = $(this),
             fileInput   = _this.find('input[type="file"]'),
-            previewList = _this.find('.preview-list');
+            previewList = _this.find('.preview-list'),
+            classSelect = _this.find('select');
 
         fileInput.change(function () {
             var files = $(this)[0].files;
@@ -370,7 +371,7 @@ var admin = (function () {
 
                         var xhr = new XMLHttpRequest();
 
-                        xhr.open('POST', '/upload?c=风景');
+                        xhr.open('POST', '/upload?c='+classSelect.val());
                         xhr.upload.addEventListener("progress", function(event){
                             if (event.lengthComputable) {
                                 var complete = (event.loaded / event.total * 100 | 0);

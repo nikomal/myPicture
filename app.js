@@ -46,8 +46,7 @@ console.log('server is start: ' + 8881);
 
 app.post('/upload', function (req, res) {
     var className = req.query.c || 'girl';
-    req.files.classes = className;
-    res.send(req.files);
+    req.files.upload.classes = className;
     if(className){
         var imgPath = req.files.upload.path;
         fs.exists('./uploads/'+className, function(exists){
@@ -56,9 +55,12 @@ app.post('/upload', function (req, res) {
             }
         });
         if(typeof req.files.upload == 'object'){
-
+            fs.rename(req.files.upload.path, './uploads/'+className+'/'+req.files.upload.name);
+            database.insertData(req.files.upload, function (data) {
+                res.send(data);
+            });
         }else{
-            console.log(req.files.upload);
+            res.send(req.files.upload);
         }
     }
 });
